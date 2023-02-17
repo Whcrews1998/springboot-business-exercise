@@ -21,11 +21,13 @@ public class Business {
     private String name;
 
     @OneToMany(mappedBy = "business")
-    @JsonIgnore
     private List<Employee> employeeList;
 
     @OneToMany(mappedBy = "business")
     private List<Equipment> equipmentList;
+
+    public Business() {
+    }
 
     public Business(String name, List<Employee> employeeList, List<Equipment> equipmentList) {
         this.name = name;
