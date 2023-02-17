@@ -1,10 +1,36 @@
 package com.whc1998.businessexercise.employee;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.whc1998.businessexercise.business.Business;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Size;
+
+@Entity
 public class Employee {
+    @Id
+    @GeneratedValue
+    private Integer id;
+
+
     private String firstName;
+
+
     private String lastName;
+
+
     private String Position;
+
     private Integer salary;
+
+    @ManyToOne
+    @JsonIgnore
+    private Business business;
+
+    public Employee() {
+    }
 
     public Employee(String firstName, String lastName, String position, Integer salary) {
         this.firstName = firstName;
