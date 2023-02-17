@@ -21,6 +21,9 @@ public class Equipment {
     @JsonIgnore
     private Business business;
 
+    public Equipment() {
+    }
+
     public Equipment(String name) {
         this.name = name;
     }
