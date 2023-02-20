@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 /*
 
@@ -45,7 +46,6 @@ public class BusinessController {
         return business.get();
     }
 
-    //Test2
     @GetMapping("/businesses/{id}/employees")
     public List<Employee> retrieveAllEmployees(@PathVariable int id) {
         Optional<Business> business = repository.findById(id);
@@ -55,6 +55,21 @@ public class BusinessController {
         }
 
         return business.get().getEmployeeList();
+    }
+
+    @GetMapping("/businesses/{id}/employees/{empId}")
+    public Employee retrieveEmployee(@PathVariable int id, @PathVariable int empId) {
+        Optional<Business> business = repository.findById(id);
+
+        if (business.isEmpty()) {
+            throw new RuntimeException("Business does not exist...");
+        }
+
+        // Functional Programming to find employee in list
+        Predicate<? super Employee> predicate = employee -> employee.getId().equals(empId);
+        Employee employee = business.get().getEmployeeList().stream().filter(predicate).findFirst().orElse(null);
+
+        return employee;
     }
 
 
