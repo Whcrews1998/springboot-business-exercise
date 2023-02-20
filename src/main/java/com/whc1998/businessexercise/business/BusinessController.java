@@ -1,6 +1,8 @@
 package com.whc1998.businessexercise.business;
 
 import com.whc1998.businessexercise.employee.Employee;
+import com.whc1998.businessexercise.exceptions.BusinessNotFoundException;
+import com.whc1998.businessexercise.exceptions.EmployeeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +42,7 @@ public class BusinessController {
         Optional<Business> business = repository.findById(id);
 
         if (business.isEmpty()){
-            throw new RuntimeException("Business does not exist...");
+            throw new BusinessNotFoundException("Business does not exist.");
         }
 
         return business.get();
@@ -51,24 +53,27 @@ public class BusinessController {
         Optional<Business> business = repository.findById(id);
 
         if (business.isEmpty()) {
-            throw new RuntimeException("Business does not exist...");
+            throw new BusinessNotFoundException("Business does not exist...");
         }
 
         return business.get().getEmployeeList();
     }
 
-    //Test2
     @GetMapping("/businesses/{id}/employees/{empId}")
     public Employee retrieveEmployee(@PathVariable int id, @PathVariable int empId) {
         Optional<Business> business = repository.findById(id);
 
         if (business.isEmpty()) {
-            throw new RuntimeException("Business does not exist...");
+            throw new BusinessNotFoundException("Business does not exist.");
         }
 
         // Functional Programming to find employee in list
         Predicate<? super Employee> predicate = employee -> employee.getId().equals(empId);
         Employee employee = business.get().getEmployeeList().stream().filter(predicate).findFirst().orElse(null);
+
+        if (employee == null) {
+            throw new EmployeeNotFoundException("Employee does not exist.");
+        }
 
         return employee;
     }
