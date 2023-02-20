@@ -1,5 +1,6 @@
 package com.whc1998.businessexercise.business;
 
+import com.whc1998.businessexercise.employee.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 /*
 
@@ -36,5 +38,12 @@ public class BusinessController {
         // ?? Implement Hateoas Standard ??
         return repository.findById(id).get();
     }
+
+    @GetMapping("/businesses/{id}/employees")
+    public List<Employee> retrieveAllEmployees(@PathVariable int id) {
+        Optional<Business> business = repository.findById(id);
+        return business.get().getEmployeeList();
+    }
+    
 
 }
