@@ -36,14 +36,25 @@ public class BusinessController {
     public Business retrieveBusinessById(@PathVariable int id) {
         // !! Check for NULL users and create EXCEPTION !!
         // ?? Implement Hateoas Standard ??
-        return repository.findById(id).get();
+        Optional<Business> business = repository.findById(id);
+
+        if (business.isEmpty()){
+            throw new RuntimeException("Business does not exist...");
+        }
+
+        return business.get();
     }
 
     @GetMapping("/businesses/{id}/employees")
     public List<Employee> retrieveAllEmployees(@PathVariable int id) {
         Optional<Business> business = repository.findById(id);
+
+        if (business.isEmpty()) {
+            throw new RuntimeException("Business does not exist...");
+        }
+
         return business.get().getEmployeeList();
     }
-    
+
 
 }
