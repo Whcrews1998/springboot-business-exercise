@@ -39,6 +39,10 @@ public class Employee {
         this.salary = salary;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     public String getFirstName() {
         return firstName;
     }
